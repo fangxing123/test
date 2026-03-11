@@ -1,0 +1,9 @@
+name: Go2Bridge
+num_envs: 64
+num_observations: 8
+num_actions: 12
+max_episode_length: 500
+dt: 0.02
+bridge_type: narrow_static_bridge
+bridge_width: 0.35
+bridge_length: 3.0
