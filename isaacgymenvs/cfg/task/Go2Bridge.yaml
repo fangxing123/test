@@ -1,0 +1,93 @@
+name: Go2Bridge
+
+physics_engine: ${..physics_engine}
+
+env:
+  numEnvs: ${resolve_default:4096,${...num_envs}}
+  envSpacing: 3.0
+  episodeLength: 1200
+  enableDebugVis: False
+
+  clipObservations: 100.0
+  clipActions: 1.0
+
+  numObservations: 72
+  numActions: 12
+
+  terrain:
+    friction: 1.0
+
+  bridge:
+    height: 0.1
+    friction: 0.8
+    jointDamping: 4.0
+    jointFriction: 0.2
+
+  baseInitState:
+    pos: [0.0, 0.0, 0.42]
+    rot: [0.0, 0.0, 0.0, 1.0]
+    linVel: [0.0, 0.0, 0.0]
+    angVel: [0.0, 0.0, 0.0]
+
+  control:
+    stiffness: 35.0
+    damping: 1.0
+    actionScale: 0.25
+
+  defaultJointAngles:
+    FL_hip_joint: 0.1
+    FR_hip_joint: -0.1
+    RL_hip_joint: 0.1
+    RR_hip_joint: -0.1
+
+    FL_thigh_joint: 0.8
+    FR_thigh_joint: 0.8
+    RL_thigh_joint: 1.0
+    RR_thigh_joint: 1.0
+
+    FL_calf_joint: -1.5
+    FR_calf_joint: -1.5
+    RL_calf_joint: -1.5
+    RR_calf_joint: -1.5
+
+  commandRanges:
+    linVelX: [0.2, 1.5]
+    linVelY: [-0.3, 0.3]
+    angVelYaw: [-0.8, 0.8]
+
+  learn:
+    commandTracking: 1.5
+    forwardProgress: 1.0
+    onBridge: 1.2
+    upright: 0.8
+    actionSmooth: 0.02
+    footSlip: 0.1
+    fallPenalty: 10.0
+
+  termination:
+    minBaseHeight: 0.20
+    minUpright: 0.2
+
+  domainRand:
+    bridgeFrictionRange: [0.4, 1.2]
+    bridgeMassScaleRange: [0.8, 1.2]
+    jointDampingRange: [0.8, 1.2]
+    baseMassScaleRange: [0.95, 1.05]
+
+sim:
+  dt: 0.02
+  substeps: 2
+  up_axis: "z"
+  use_gpu_pipeline: ${eq:${...pipeline},"gpu"}
+  gravity: [0.0, 0.0, -9.81]
+  physx:
+    num_threads: ${....num_threads}
+    solver_type: ${....solver_type}
+    use_gpu: ${contains:"cuda",${....sim_device}}
+    num_position_iterations: 4
+    num_velocity_iterations: 0
+    contact_offset: 0.01
+    rest_offset: 0.0
+    bounce_threshold_velocity: 0.2
+    max_depenetration_velocity: 10.0
+    default_buffer_size_multiplier: 5.0
