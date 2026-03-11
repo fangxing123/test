@@ -1,0 +1,85 @@
+name: Go2Bridge
+
+physics_engine: "physx"
+
+env:
+  numEnvs: 4096
+  envSpacing: 4.0
+  episodeLength_s: 20
+  enableDebugVis: False
+
+  numObservations: 69
+  numActions: 12
+
+  plane:
+    staticFriction: 1.0
+    dynamicFriction: 1.0
+    restitution: 0.0
+
+  asset:
+    assetRoot: "assets"
+    robotAssetFile: "go2/go2.urdf"
+    bridgeAssetFile: "bridge/floating_bridge.urdf"
+    footNames: ["FL_foot", "FR_foot", "RL_foot", "RR_foot"]
+
+  control:
+    decimation: 4
+    actionScale: 0.35
+    stiffness: 35.0
+    damping: 1.0
+
+  bridge:
+    linearDamping: 0.1
+    angularDamping: 0.2
+    jointDamping: 5.0
+
+  defaultJointAngles:
+    [0.1, 0.8, -1.5,
+     -0.1, 0.8, -1.5,
+     0.1, 1.0, -1.7,
+     -0.1, 1.0, -1.7]
+
+  commands:
+    linVelX: [0.0, 1.2]
+    linVelY: [-0.2, 0.2]
+    angVelYaw: [-0.8, 0.8]
+
+  learn:
+    linearVelocityScale: 2.0
+    angularVelocityScale: 0.25
+    dofPositionScale: 1.0
+    dofVelocityScale: 0.05
+
+  rewardScales:
+    tracking: 2.0
+    forward: 0.8
+    onBridge: 1.0
+    upright: 1.0
+    actionSmoothness: 0.02
+    footSlip: 0.08
+    fall: 8.0
+
+  domainRand:
+    bridgeFriction: [0.5, 1.5]
+    bridgeMassScale: [0.8, 1.2]
+    jointDampingScale: [0.7, 1.3]
+    baseMassScale: [0.9, 1.1]
+
+sim:
+  dt: 0.005
+  substeps: 1
+  up_axis: "z"
+  use_gpu_pipeline: True
+  gravity: [0.0, 0.0, -9.81]
+  physx:
+    num_threads: 4
+    solver_type: 1
+    num_position_iterations: 4
+    num_velocity_iterations: 0
+    contact_offset: 0.02
+    rest_offset: 0.0
+    bounce_threshold_velocity: 0.2
+    max_depenetration_velocity: 10.0
+    default_buffer_size_multiplier: 5.0
+    max_gpu_contact_pairs: 1048576
+    num_subscenes: 4
